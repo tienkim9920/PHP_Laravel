@@ -1,0 +1,109 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.wapper {
+    background-color: rgb(247, 247, 247);
+    height: 50rem;
+}
+
+.header {
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.groupHeader {
+    width: 60%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header h1 {
+    padding: .8rem 0;
+    color: rgb(173, 173, 173);
+    font-weight: 300;
+}
+
+.header img {
+    width: 75px;
+}
+
+.btnAddCart {
+    margin-top: 2rem;
+}
+
+.btn-info {
+    padding: .6rem 1.3rem !important;
+    background-color: rgb(211, 159, 159);
+    border: none;
+}
+
+.btn-info:hover {
+    background-color: rgb(194, 153, 153);
+}
+
+.footer p {
+    text-align: center;
+}
+
+.bodyCart {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.cartWapper {
+    width: 40%;
+    background-color: #ffffff;
+    padding: 1.5rem 2rem;
+}
+
+.wapper h1 {
+    text-align: center;
+    padding: 1rem 0;
+    color: rgb(155, 155, 155);
+    font-weight: 400;
+}
+
+.block {
+    display: block;
+}
+
+.groupInput {
+    display: block;
+    padding: .6rem 0;
+    height: 5.5rem;
+}
+
+.groupInput input{
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgb(221, 221, 221);
+}
+
+.groupSubmit{
+    display: flex;
+    justify-content: center;
+    padding: 1.2rem 0;
+    margin-top: 1rem;
+}
+
+.groupInput input:focus{
+    border-bottom: 1.2px solid rgb(209, 209, 209);
+}
+
+label{
+    color: rgb(182, 182, 182);
+}
+
+.Error{
+    color: red;
+}
+
+.alert-success{
+    width: 100%;
+
+}

@@ -1,0 +1,89 @@
+
+.WrapperLogin{
+    height: 52rem;
+    background-color: rgb(245, 245, 245);
+    display: flex;
+    justify-content: center;
+}
+
+.groupLogin{
+    height: 35rem;
+    margin-top: 8rem;
+    padding: 3rem 0;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px rgb(219, 219, 219), -2px 2px 2px rgb(219, 219, 219);
+    width: 65%;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.inputThongTin{
+    padding: 2rem 2rem;
+    border-right: 1px solid rgb(206, 206, 206);
+}
+
+.optionDangNhap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginGoogle{
+    padding: 1.2rem 2.4rem;
+    background-color: rgb(235, 72, 72);
+    color: white;
+    border-radius: 3rem;
+}
+
+.loginGoogle:hover{
+    background-color: rgb(189, 82, 82);
+    color: white;
+}
+
+.loginFacebook{
+    padding: 1.2rem 2rem;
+    background-color: rgb(75, 75, 247);
+    color: white;
+    border-radius: 3rem;
+}
+
+.loginFacebook:hover{
+    background-color: rgb(75, 75, 182);
+    color: white;
+}
+
+.khoangCach{
+    height: 1rem;
+}
+
+.clickLogin{
+    font-family: 'Dosis', sans-serif;
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.clickLogin:hover{
+    color: rgb(161, 204, 76);
+}
+
+.groupOption{
+    display: flex;
+    justify-content: center;
+    padding-top: 4rem;
+}
+
+.dangNhap{
+    padding: .6rem 1.6rem;
+    border: 1px solid rgb(119, 193, 235);
+    color: rgb(119, 193, 235);
+    text-transform: uppercase;
+    margin: 0 .5rem;
+    border-radius: 5rem;
+}
+
+.dangNhap:hover{
+    background-color: rgb(119, 193, 235); 
+    color: white;
+}
