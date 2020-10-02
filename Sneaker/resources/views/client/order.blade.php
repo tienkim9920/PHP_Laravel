@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Site Metas -->
-    <title>Detail Product</title>
+    <title>Check Out</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -29,14 +29,20 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv..js') }}"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min..js') }}"></script>
-    <![endif]-->
 
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
+
+    <div class="wapperLoad" id="loading">
+        <div class="loader"></div>
+    </div>
+
     <!-- Start Main Top -->
     <div class="main-top">
         <div class="container-fluid">
@@ -76,8 +82,8 @@
                 <!-- Start Header Navigation -->
                 <div class="navbar-header">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fa fa-bars"></i>
-                </button>
+                        <i class="fa fa-bars"></i>
+                    </button>
                     <a class="navbar-brand" href="index.html"><img src="images/logo.png" class="logo" alt=""></a>
                 </div>
                 <!-- End Header Navigation -->
@@ -85,12 +91,12 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/client">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-                        <li class="dropdown">
-                            <a href="shop.html" class="nav-link">SHOP</a>
+                        <li class="dropdown active">
+                            <a href="#" class="nav-link">SHOP</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/client/carts">Cart</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
                     </ul>
                 </div>
@@ -117,15 +123,14 @@
                 </div>
                 <!-- End Atribute Navigation -->
             </div>
-
             <!-- Start Side Menu -->
             <div class="side">
-                <a style="cursor: pointer;" class="close-side"><i class="fa fa-times"></i></a>
+                <a href="#" class="close-side"><i class="fa fa-times"></i></a>
                 <li class="cart-box">
                     <ul class="cart-list">
                         @foreach ($carts as $cart)
                         <li>
-                            <a style="cursor: pointer;" class="photo"><img src="{{ $cart->imageProduct }}" class="cart-thumb" alt="" /></a>
+                            <a href="#" class="photo"><img src="{{ $cart->imageProduct }}" class="cart-thumb" alt="" /></a>
                             <h6><a href="#">{{ $cart->nameProduct }}</a></h6>
                             <p>{{ $cart->count }} x - <span class="price">${{ $cart->priceProduct }}</span></p>
                         </li>
@@ -138,7 +143,6 @@
                 </li>
             </div>
             <!-- End Side Menu -->
-
         </nav>
         <!-- End Navigation -->
     </header>
@@ -156,73 +160,61 @@
     </div>
     <!-- End Top Search -->
 
-    <div class="WrapperLogin">
-        <div class="groupLogin">
-        <div class="inputThongTin">
-                <div class="form-group">
-                    <label>Full Name:</label>
-                    <input type="text" class="form-control" placeholder="Enter Full Name">
-                </div>
-                <div class="form-group">
-                    <label>Email:</label>
-                    <input type="text" class="form-control" placeholder="Enter Email">
-                </div>
-                <div class="form-group">
-                    <label>Password:</label>
-                    <input type="password" class="form-control" placeholder="Enter Password">
-                </div>
-                <form action="">
-                    <input type="submit" value="Sign Up" class="btn btn-primary">
-                </form>
-                <div class="groupOption">
-                    <a class="dangNhap" href="/client/login">Sign In</a>
-                    <a class="dangNhap" style="background-color: rgb(119, 193, 235); color: white; cursor: pointer;">Sign Up</a>
-                </div>
-            </div>
-            <div class="optionDangNhap">
-                <div class="groupDangNhap">
-                    <a href="#" class="loginGoogle">Đăng Nhập Bằng Google <img src="{{ asset('images/iconGoogle.jpg') }}" alt="" width="39px"></a>
-                    <div class="khoangCach"></div>
-                    <hr>
-                    <div class="khoangCach"></div>
-                    <a href="#" class="loginFacebook">Đăng Nhập Bằng Facebook <img src="{{ asset('images/iconFacebook.jpg') }}" alt="" width="35px"></a>
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Checkout</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        <li class="breadcrumb-item active">Checkout</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
+    <!-- End All Title Box -->
 
+    <div class="container" style="height: 23rem; width: 100%;">
+        <h1 style="margin-top: 7rem; font-size: 3rem;">Đã Xác Nhận Đơn Hàng Thành Công</h1>
+        <p style="margin-top: 2rem; font-size: 1.6rem;">Vui Lòng Kiểm Tra Lại Gmail!</p>
+    </div>
 
+    <!-- End Cart -->
 
     <!-- Start Footer  -->
     <footer>
         <div class="footer-main">
             <div class="container">
-				<div class="row">
-					<div class="col-lg-4 col-md-12 col-sm-12">
-						<div class="footer-top-box">
-							<h3>Business Time</h3>
-							<ul class="list-time">
-								<li>Monday - Friday: 08.00am to 05.00pm</li> <li>Saturday: 10.00am to 08.00pm</li> <li>Sunday: <span>Closed</span></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-12 col-sm-12">
-						<div class="footer-top-box">
-							<h3>Newsletter</h3>
-							<form class="newsletter-box">
-								<div class="form-group">
-									<input class="" type="email" name="Email" placeholder="Email Address*" />
-									<i class="fa fa-envelope"></i>
-								</div>
-								<button class="btn hvr-hover" type="submit">Submit</button>
-							</form>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-12 col-sm-12">
-						<div class="footer-top-box">
-							<h3>Social Media</h3>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-							<ul>
+                <div class="row">
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="footer-top-box">
+                            <h3>Business Time</h3>
+                            <ul class="list-time">
+                                <li>Monday - Friday: 08.00am to 05.00pm</li>
+                                <li>Saturday: 10.00am to 08.00pm</li>
+                                <li>Sunday: <span>Closed</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="footer-top-box">
+                            <h3>Newsletter</h3>
+                            <form class="newsletter-box">
+                                <div class="form-group">
+                                    <input class="" type="email" name="Email" placeholder="Email Address*" />
+                                    <i class="fa fa-envelope"></i>
+                                </div>
+                                <button class="btn hvr-hover" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="footer-top-box">
+                            <h3>Social Media</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <ul>
                                 <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
                                 <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
                                 <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
@@ -231,16 +223,16 @@
                                 <li><a href="#"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a></li>
                                 <li><a href="#"><i class="fab fa-whatsapp" aria-hidden="true"></i></a></li>
                             </ul>
-						</div>
-					</div>
-				</div>
-				<hr>
+                        </div>
+                    </div>
+                </div>
+                <hr>
                 <div class="row">
                     <div class="col-lg-4 col-md-12 col-sm-12">
                         <div class="footer-widget">
                             <h4>About Freshshop</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> 
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p> 							
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12">
@@ -304,6 +296,7 @@
     <script src="{{ asset('js/form-validator.min.js') }}"></script>
     <script src="{{ asset('js/contact-form-script.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+
 </body>
 
 </html>

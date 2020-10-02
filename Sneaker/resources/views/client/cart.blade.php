@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="login-box" style="width: 15rem !important;">
-                        @if (isset($_SESSION['user']))
+                        @if (isset($_SESSION['idUser']))
                         <a class="clickLogin" href="#">{{ $_SESSION['user'] }}</a>
                         <a class="clickLogin" href="/client/login">( Log Out )</a>
                         @else
@@ -91,7 +91,7 @@
                         <li class="dropdown">
                             <a href="#" class="nav-link">SHOP</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="#">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/client/carts">Cart</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
                     </ul>
                 </div>
@@ -232,7 +232,7 @@
                         </div>
                     </div>
                     <div class="col-12 d-flex shopping-box">
-                        @if (isset($_SESSION['user']))
+                        @if (isset($_SESSION['idUser']))
                             <input type="hidden" id="checkID" value="{{ $_SESSION['idUser'] }}">
                             <a id="checkOrder" value="123123" class="ml-auto btn hvr-hover" style="padding: .8rem 4rem !important; cursor: pointer; color: #ffffff;">Checkout</a>
                         @else

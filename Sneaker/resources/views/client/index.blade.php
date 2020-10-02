@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Site Metas -->
-    <title>Detail Product</title>
+    <title>Home Product</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="login-box" style="width: 15rem !important;">
-                        @if (isset($_SESSION['user']))
+                        @if (isset($_SESSION['idUser']))
                         <a class="clickLogin" href="#">{{ $_SESSION['user'] }}</a>
                         <a class="clickLogin" href="/client/login">( Log Out )</a>
                         @else
@@ -86,10 +86,10 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
-                        <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="/client">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
                         <li class="dropdown">
-                            <a href="shop.html" class="nav-link">SHOP</a>
+                            <a href="#" class="nav-link">SHOP</a>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="/client/carts">Cart</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
@@ -99,10 +99,10 @@
 
                 <!-- Start Atribute Navigation -->
                 <div class="attr-nav">
-                    <ul>
-                        <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
+                    <ul class="countCart_data">
+                        <li class="search"><a style="cursor: pointer;"><i class="fa fa-search"></i></a></li>
                         <li class="side-menu">
-                            <a href="cart.html">
+                            <a style="cursor: pointer;">
                                 <i class="fa fa-shopping-bag"></i>
                                 <span class="badge">
                                     <?php if (isset($_SESSION['user'])) { ?>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Site Metas -->
-    <title>Cart Product</title>
+    <title>Check Out</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -36,9 +36,60 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            /* Safari */
+            animation: spin 2s linear infinite;
+            position: fixed;
+            top: 20rem;
+            left: 45%;
+        }
+
+        .wapperLoad {
+            position: fixed;
+            background-image: linear-gradient(rgba(242, 242, 242, .5), rgba(242, 242, 242, .5));
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            display: none;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
 </head>
 
 <body>
+
+    <div class="wapperLoad" id="loading">
+        <div class="loader"></div>
+    </div>
+
     <!-- Start Main Top -->
     <div class="main-top">
         <div class="container-fluid">
@@ -56,8 +107,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-					<div class="login-box" style="width: 15rem !important;">
-                        @if (isset($_SESSION['user']))
+                    <div class="login-box" style="width: 15rem !important;">
+                        @if (isset($_SESSION['idUser']))
                         <a class="clickLogin" href="#">{{ $_SESSION['user'] }}</a>
                         <a class="clickLogin" href="/client/login">( Log Out )</a>
                         @else
@@ -78,8 +129,8 @@
                 <!-- Start Header Navigation -->
                 <div class="navbar-header">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fa fa-bars"></i>
-                </button>
+                        <i class="fa fa-bars"></i>
+                    </button>
                     <a class="navbar-brand" href="index.html"><img src="images/logo.png" class="logo" alt=""></a>
                 </div>
                 <!-- End Header Navigation -->
@@ -87,12 +138,12 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/client">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
                         <li class="dropdown active">
-                            <a href="shop.html" class="nav-link">SHOP</a>
+                            <a href="#" class="nav-link">SHOP</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/client/carts">Cart</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
                     </ul>
                 </div>
@@ -173,153 +224,158 @@
     <!-- End All Title Box -->
 
     <!-- Start Cart  -->
-    <div class="cart-box-main">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-lg-6 mb-3">
-                    <div class="checkout-address">
-                        <div class="title-left">
-                            <h3>Billing address</h3>
-                        </div>
-                        <form class="needs-validation" novalidate>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="firstName">First name *</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
-                                    <div class="invalid-feedback"> Valid first name is required. </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="lastName">Last name *</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
-                                    <div class="invalid-feedback"> Valid last name is required. </div>
-                                </div>
+    <form action="/client/order/mail" method="POST">
+        @csrf
+        <div class="cart-box-main">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-lg-6 mb-3">
+                        <div class="checkout-address">
+                            <div class="title-left">
+                                <h3>Billing address</h3>
                             </div>
-                            <div class="mb-3">
-                                <label for="username">Username *</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="username" placeholder="" required>
-                                    <div class="invalid-feedback" style="width: 100%;"> Your username is required. </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email">Email *</label>
-                                <input type="email" class="form-control" id="email" placeholder="">
-                                <div class="invalid-feedback"> Please enter a valid email address for shipping updates. </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="address">Address *</label>
-                                <input type="text" class="form-control" id="address" placeholder="" required>
-                                <div class="invalid-feedback"> Please enter your shipping address. </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="address2">Address 2 *</label>
-                                <input type="text" class="form-control" id="address2" placeholder=""> </div>
-                            <div class="col-md-12 col-lg-12">
-                                <div class="shipping-method-box">
-                                    <div class="title-left">
-                                        <h3>Shipping Method</h3>
-                                    </div>
-                                    <div class="mb-4">
-                                        <div class="custom-control custom-radio">
-                                            <input id="shippingOption1" name="shipping-option" class="custom-control-input" checked="checked" type="radio">
-                                            <label class="custom-control-label" for="shippingOption1">Standard Delivery</label> <span class="float-right font-weight-bold">FREE</span> </div>
-                                        <div class="ml-4 mb-2 small">(3-7 business days)</div>
-                                        <div class="custom-control custom-radio">
-                                            <input id="shippingOption2" name="shipping-option" class="custom-control-input" type="radio">
-                                            <label class="custom-control-label" for="shippingOption2">Express Delivery</label> <span class="float-right font-weight-bold">$10</span> </div>
-                                        <div class="ml-4 mb-2 small">(2-4 business days)</div>
-                                        <div class="custom-control custom-radio">
-                                            <input id="shippingOption3" name="shipping-option" class="custom-control-input" type="radio">
-                                            <label class="custom-control-label" for="shippingOption3">Next Business day</label> <span class="float-right font-weight-bold">$20</span> </div>
+                            <form class="needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label for="username">User Name *</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="username" id="username" placeholder="" required>
+                                        <div class="invalid-feedback" style="width: 100%;"> Your username is required. </div>
                                     </div>
                                 </div>
-                            </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-6 mb-3">
-                    <div class="row">
-                        <div class="col-md-12 col-lg-12">
-                            <div class="odr-box">
-                                <div class="title-left">
-                                    <h3>Shopping cart</h3>
+                                <div class="mb-3">
+                                    <label for="email">Email *</label>
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="">
+                                    <div class="invalid-feedback"> Please enter a valid email address for shipping updates. </div>
                                 </div>
-                                
-                                <div class="rounded p-2 bg-light">
-                                    @foreach ($carts as $cart)
-                                    <div class="media mb-2 border-bottom">
-                                        <div class="media-body"> <a href="detail.html"> {{ $cart->nameProduct }}</a>
-                                            <div class="small text-muted">Price: ${{ $cart->priceProduct }} <span class="mx-2">|</span> Count: {{ $cart->count }} </div>
+                                <div class="mb-3">
+                                    <label for="address">Address *</label>
+                                    <input type="text" class="form-control" name="address" id="address" placeholder="" required>
+                                    <div class="invalid-feedback"> Please enter your shipping address. </div>
+                                </div>
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="shipping-method-box">
+                                        <div class="title-left">
+                                            <h3>Shipping Method</h3>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="custom-control custom-radio">
+                                                <input id="shippingOption1" value="0" onclick="isChecked(0)" name="shipping-option" class="custom-control-input" checked="checked" type="radio">
+                                                <label class="custom-control-label" for="shippingOption1">Standard Delivery</label>
+                                                <span class="float-right font-weight-bold">FREE</span>
+                                            </div>
+                                            <div class="ml-4 mb-2 small">(3-7 business days)</div>
+                                            <div class="custom-control custom-radio">
+                                                <input id="shippingOption2" value="10" onclick="isChecked(1)" name="shipping-option" class="custom-control-input" type="radio">
+                                                <label class="custom-control-label" for="shippingOption2">Express Delivery</label>
+                                                <span class="float-right font-weight-bold" id="priceShip1" value="10">$ {{ $shipGan }}</span>
+                                            </div>
+                                            <div class="ml-4 mb-2 small">(2-4 business days)</div>
+                                            <div class="custom-control custom-radio">
+                                                <input id="shippingOption3" value="20" onclick="isChecked(2)" name="shipping-option" class="custom-control-input" type="radio">
+                                                <label class="custom-control-label" for="shippingOption3">Next Business day</label>
+                                                <span class="float-right font-weight-bold" id="priceShip2" value="20">$ {{ $shipXa }} </span>
+                                            </div>
                                         </div>
                                     </div>
-                                    @endforeach
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-6 mb-3">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="odr-box">
+                                    <div class="title-left">
+                                        <h3>Shopping cart</h3>
+                                    </div>
+
+                                    <div class="rounded p-2 bg-light">
+                                        @foreach ($carts as $cart)
+                                        <div class="media mb-2 border-bottom">
+                                            <div class="media-body"> <a href="detail.html"> {{ $cart->nameProduct }}</a>
+                                                <div class="small text-muted">Price: ${{ $cart->priceProduct }} <span class="mx-2">|</span> Count: {{ $cart->count }} </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-md-12 col-lg-12">
+                                <div class="checkout_data">
+                                    <div class="order-box">
+                                        <div class="title-left">
+                                            <h3>Your order</h3>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="font-weight-bold">Product</div>
+                                            <div class="ml-auto font-weight-bold">Total</div>
+                                        </div>
+                                        <hr class="my-1">
+                                        <div class="d-flex">
+                                            <h4>Sub Total</h4>
+                                            <div class="ml-auto font-weight-bold"> $ {{ $total }} </div>
+                                        </div>
+                                        <hr class="my-1">
+                                        <div class="d-flex">
+                                            <h4>Shipping Cost</h4>
+                                            <div class="ml-auto font-weight-bold"> Free </div>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex gr-total">
+                                            <h5>Grand Total</h5>
+                                            <div class="ml-auto h5">
+                                                <input type="hidden" value="{{ $total }}" name="total">
+                                                $ {{ $total }}
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex shopping-box">
+                                <input type="hidden" value="Loading" id="CheckLoading">
+                                <button id="placeOrder" style="color: #ffffff; padding: .6rem 1.4rem;" type="submit" class="ml-auto btn hvr-hover">Place Order</button>
+                            </div>
                         </div>
-                        <div class="col-md-12 col-lg-12">
-                            <div class="order-box">
-                                <div class="title-left">
-                                    <h3>Your order</h3>
-                                </div>
-                                <div class="d-flex">
-                                    <div class="font-weight-bold">Product</div>
-                                    <div class="ml-auto font-weight-bold">Total</div>
-                                </div>
-                                <hr class="my-1">
-                                <div class="d-flex">
-                                    <h4>Sub Total</h4>
-                                    <div class="ml-auto font-weight-bold"> $ {{ $total }} </div>
-                                </div>
-                                <hr class="my-1">
-                                <div class="d-flex">
-                                    <h4>Shipping Cost</h4>
-                                    <div class="ml-auto font-weight-bold"> Free </div>
-                                </div>
-                                <hr>
-                                <div class="d-flex gr-total">
-                                    <h5>Grand Total</h5>
-                                    <div class="ml-auto h5"> $ {{ $total }} </div>
-                                </div>
-                                <hr> </div>
-                        </div>
-                        <div class="col-12 d-flex shopping-box"> <a href="checkout.html" class="ml-auto btn hvr-hover">Place Order</a> </div>
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
+    </form>
+
     <!-- End Cart -->
 
     <!-- Start Footer  -->
     <footer>
         <div class="footer-main">
             <div class="container">
-				<div class="row">
-					<div class="col-lg-4 col-md-12 col-sm-12">
-						<div class="footer-top-box">
-							<h3>Business Time</h3>
-							<ul class="list-time">
-								<li>Monday - Friday: 08.00am to 05.00pm</li> <li>Saturday: 10.00am to 08.00pm</li> <li>Sunday: <span>Closed</span></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-12 col-sm-12">
-						<div class="footer-top-box">
-							<h3>Newsletter</h3>
-							<form class="newsletter-box">
-								<div class="form-group">
-									<input class="" type="email" name="Email" placeholder="Email Address*" />
-									<i class="fa fa-envelope"></i>
-								</div>
-								<button class="btn hvr-hover" type="submit">Submit</button>
-							</form>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-12 col-sm-12">
-						<div class="footer-top-box">
-							<h3>Social Media</h3>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-							<ul>
+                <div class="row">
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="footer-top-box">
+                            <h3>Business Time</h3>
+                            <ul class="list-time">
+                                <li>Monday - Friday: 08.00am to 05.00pm</li>
+                                <li>Saturday: 10.00am to 08.00pm</li>
+                                <li>Sunday: <span>Closed</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="footer-top-box">
+                            <h3>Newsletter</h3>
+                            <form class="newsletter-box">
+                                <div class="form-group">
+                                    <input class="" type="email" name="Email" placeholder="Email Address*" />
+                                    <i class="fa fa-envelope"></i>
+                                </div>
+                                <button class="btn hvr-hover" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="footer-top-box">
+                            <h3>Social Media</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <ul>
                                 <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
                                 <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
                                 <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
@@ -328,16 +384,16 @@
                                 <li><a href="#"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a></li>
                                 <li><a href="#"><i class="fab fa-whatsapp" aria-hidden="true"></i></a></li>
                             </ul>
-						</div>
-					</div>
-				</div>
-				<hr>
+                        </div>
+                    </div>
+                </div>
+                <hr>
                 <div class="row">
                     <div class="col-lg-4 col-md-12 col-sm-12">
                         <div class="footer-widget">
                             <h4>About Freshshop</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> 
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p> 							
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12">
@@ -401,6 +457,98 @@
     <script src="{{ asset('js/form-validator.min.js') }}"></script>
     <script src="{{ asset('js/contact-form-script.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+
+    <style>
+        .alertify-notifier {
+            color: #ffffff;
+        }
+    </style>
+
+    <script>
+        var shipping = document.getElementsByClassName('custom-control-input');
+
+        function isChecked(n) {
+
+            var priceShip = shipping[n].value;
+            console.log(priceShip);
+
+            $url = '{{ route("client.ship") }}';
+
+            $.ajax({
+                type: "get",
+                url: $url,
+                data: {
+                    price: priceShip
+                },
+                success: function(response) {
+                    if (response.code === 200) {
+                        alertify.set('notifier', 'position', 'bottom-left');
+                        alertify.success('Thay Đổi Phương Thức Thành Công!');
+
+                        $('.checkout_data').empty();
+                        $('.checkout_data').html(response.viewCheckout);
+                    }
+                }
+            });
+
+        }
+
+        function DomID(id) {
+            return document.getElementById(id);
+        }
+
+        var flag = true;
+        DomID('placeOrder').addEventListener('click', () => {
+            var CheckLoading = DomID('CheckLoading');
+            console.log(CheckLoading)
+
+            if (CheckLoading === undefined) {
+                flag = false;
+            }
+
+            var username = DomID('username').value
+            var email = DomID('email').value
+            var address = DomID('address').value
+
+            if (username !== ""){
+                if (email !== ""){
+                    if (validateEmail(email)){
+                        if (address !== ""){
+                            flag = true;
+                        }else{
+                            flag = false;
+                        }
+                    }else{
+                        flag = false;
+                    }
+                }else{
+                    flag = false;
+                }
+            }else{
+                flag = false;
+            }
+
+            if (flag) {
+                DomID('loading').setAttribute('style', "display: block")
+            }
+        })
+
+        function validateEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+    </script>
+
+
 </body>
 
 </html>

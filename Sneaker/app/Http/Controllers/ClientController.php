@@ -10,6 +10,7 @@ use App\Users;
 use App\Carts;
 use App\CartsTemp;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class ClientController extends Controller
 {
@@ -54,9 +55,9 @@ class ClientController extends Controller
         $countCart = 0;
 
 
-        if (isset($_SESSION['user'])) {
-            echo "Session User la " . $_SESSION['user'];
-        }
+        // if (isset($_SESSION['user'])) {
+        //     echo "Session User la " . $_SESSION['user'];
+        // }
 
         if (!isset($_SESSION['userTemp'])) {
             $_SESSION['userTemp'] = rand(10, 1000);
@@ -64,15 +65,18 @@ class ClientController extends Controller
 
 
         $countCart = 0;
+
         $total = 0;
 
-        if (isset($_SESSION['userTemp'])) {
+        if (isset($_SESSION['idUser'])){
+            $userTemps = $this->cart->where('idUser', $_SESSION['idUser'])->get();
+        }else{
             $userTemps = $this->cartTemp->where('idUser', $_SESSION['userTemp'])->get();
         }
 
         foreach ($userTemps as $userTemp) {
-            $countCart += $userTemp->count;
             $total += $userTemp->count * $userTemp->priceProduct;
+            $countCart += $userTemp->count;
         }
 
 
@@ -81,6 +85,7 @@ class ClientController extends Controller
 
             'sliceLatestBlog' => $sliceLatestBlog, 'countCart' => $countCart, 'carts' => $userTemps, 'total' => $total
         ]);
+
     }
 
 
@@ -97,7 +102,6 @@ class ClientController extends Controller
         //Render Chi Tiet San Pham//
 
 
-
         //-----Số Lượng Giỏ Hàng------//
         //Giỏ Hàng đã mua của User//
         // $carts = $this->product->where();
@@ -107,23 +111,18 @@ class ClientController extends Controller
 
         $countCart = 0;
 
+        $total = 0;
 
-        if (isset($_SESSION['user'])) {
-            echo "Session User la " . $_SESSION['user'];
-        }
-
-        if (isset($_SESSION['userTemp'])) {
+        if (isset($_SESSION['idUser'])){
+            $userTemps = $this->cart->where('idUser', $_SESSION['idUser'])->get();
+        }else{
             $userTemps = $this->cartTemp->where('idUser', $_SESSION['userTemp'])->get();
         }
-
-        $total = 0;
 
         foreach ($userTemps as $userTemp) {
             $total += $userTemp->count * $userTemp->priceProduct;
             $countCart += $userTemp->count;
         }
-
-
 
         return view('client.detail', [
             'product' => $productDetail, 'slice8' => $slice8, 'countCart' => $countCart,
@@ -153,49 +152,96 @@ class ClientController extends Controller
                 $imgSP1 = $value->imgSP1;
             }
 
-            //Tìm những sản phẩm mà User đó mua
-            $cartUser = $this->cartTemp->all();
+            //Tìm những sản phẩm mà User đó mua. Nếu chưa Login thì sẽ add vào database carts_temp
+            //Nếu đã Login rồi thì add vào database carts
+            if (isset($_SESSION['idUser'])){
+                $cartUser = $this->cart->where('idUser', $_SESSION['idUser'])->get();
 
-            if (count($cartUser) > 0) {
-                $flag = true;
-
-                foreach ($cartUser as $cart) {
-                    if ($cart->idProduct == $idProduct) {
-                        $count += $cart->count;
-                        $idProductUpdate = $cart->id;
-                        $flag = false;
+                if (count($cartUser) > 0) {
+                    $flag = true;
+    
+                    foreach ($cartUser as $cart) {
+                        if ($cart->idProduct == $idProduct) {
+                            $count += $cart->count;
+                            $idProductUpdate = $cart->id;
+                            $flag = false;
+                        }
                     }
+    
+                    if (!$flag) {
+    
+                        $cart = Carts::findOrFail($idProductUpdate);
+    
+                        $cart->count = $count;
+    
+                        $cart->save();
+                    } else {
+                        $value = array(
+                            'idUser' => $_SESSION['idUser'], 'idProduct' => $id, 'nameProduct' => $tenSP, 'priceProduct' => $giaSP,
+                            'imageProduct' => $imgSP1, 'count' => $count
+                        );
+    
+                        Carts::insert($value);
+                    }
+                } else {
+    
+                    $value = array(
+                        'idUser' => $_SESSION['idUser'], 'idProduct' => $id, 'nameProduct' => $tenSP, 'priceProduct' => $giaSP,
+                        'imageProduct' => $imgSP1, 'count' => $count
+                    );
+    
+                    Carts::insert($value);
                 }
 
-                if (!$flag) {
+            }else{
 
-                    $cart = CartsTemp::findOrFail($idProductUpdate);
+                $cartUser = $this->cartTemp->where('idUser', $_SESSION['userTemp'])->get();
 
-                    $cart->count = $count;
-
-                    $cart->save();
+                if (count($cartUser) > 0) {
+                    $flag = true;
+    
+                    foreach ($cartUser as $cart) {
+                        if ($cart->idProduct == $idProduct) {
+                            $count += $cart->count;
+                            $idProductUpdate = $cart->id;
+                            $flag = false;
+                        }
+                    }
+    
+                    if (!$flag) {
+    
+                        $cart = CartsTemp::findOrFail($idProductUpdate);
+    
+                        $cart->count = $count;
+    
+                        $cart->save();
+                    } else {
+                        $value = array(
+                            'idUser' => $_SESSION['userTemp'], 'idProduct' => $id, 'nameProduct' => $tenSP, 'priceProduct' => $giaSP,
+                            'imageProduct' => $imgSP1, 'count' => $count
+                        );
+    
+                        CartsTemp::insert($value);
+                    }
                 } else {
+    
                     $value = array(
                         'idUser' => $_SESSION['userTemp'], 'idProduct' => $id, 'nameProduct' => $tenSP, 'priceProduct' => $giaSP,
                         'imageProduct' => $imgSP1, 'count' => $count
                     );
-
+    
                     CartsTemp::insert($value);
                 }
-            } else {
-
-                $value = array(
-                    'idUser' => $_SESSION['userTemp'], 'idProduct' => $id, 'nameProduct' => $tenSP, 'priceProduct' => $giaSP,
-                    'imageProduct' => $imgSP1, 'count' => $count
-                );
-
-                CartsTemp::insert($value);
+    
             }
 
+            
             $countCart = 0;
 
             //Render Product Detail
-            if (isset($_SESSION['userTemp'])) {
+            if (isset($_SESSION['idUser'])){
+                $userTemps = $this->cart->where('idUser', $_SESSION['idUser'])->get();
+            }else{
                 $userTemps = $this->cartTemp->where('idUser', $_SESSION['userTemp'])->get();
             }
 
@@ -218,7 +264,7 @@ class ClientController extends Controller
 
         $total = 0;
 
-        if (isset($_SESSION['user'])){
+        if (isset($_SESSION['idUser'])){
             $userTemps = $this->cart->where('idUser', $_SESSION['idUser'])->get();
         }else{
             $userTemps = $this->cartTemp->where('idUser', $_SESSION['userTemp'])->get();
@@ -239,16 +285,24 @@ class ClientController extends Controller
     {
 
         if ($request->ajax()) {
-            // dd($request->all());
 
             $id = $request->get('id');
-            CartsTemp::find($id)->delete();
+
+            if (isset($_SESSION['idUser'])){
+
+                Carts::find($id)->delete();
+                $carts = Carts::where('idUser', $_SESSION['idUser'])->get();
+
+            }else{
+
+                CartsTemp::find($id)->delete();
+                $carts = CartsTemp::where('idUser', $_SESSION['userTemp'])->get();
+
+            }
 
             $countCart = 0;
 
             $total = 0;
-
-            $carts = CartsTemp::where('idUser', $_SESSION['userTemp'])->get();
 
             foreach ($carts as $cart) {
                 $countCart += $cart->count;
@@ -270,16 +324,24 @@ class ClientController extends Controller
             $id = $request->get('idChange');
             $countChange = $request->get('countChange');
 
-            CartsTemp::where('id', $id)->update(['count' => $countChange]);
+
+            if (isset($_SESSION['idUser'])){
+                Carts::where('id', $id)->update(['count' => $countChange]);
+
+                //Render ra những sản phẩm mà User đã mua
+                $carts = Carts::where('idUser', $_SESSION['idUser'])->get();
+            }else{
+                CartsTemp::where('id', $id)->update(['count' => $countChange]);
+
+                //Render ra những sản phẩm mà User đã mua
+                $carts = CartsTemp::where('idUser', $_SESSION['userTemp'])->get();
+            }
 
 
             //Đổ Dữ Liệu Ra Lại View
             $countCart = 0;
 
             $total = 0;
-
-            //Render ra những sản phẩm mà User đã mua
-            $carts = CartsTemp::where('idUser', $_SESSION['userTemp'])->get();
 
             foreach ($carts as $cart) {
                 $countCart += $cart->count;
@@ -404,9 +466,9 @@ class ClientController extends Controller
 
             $id = $request->get('id');
 
-            $carts = CartsTemp::where('idUser', $id)->get();
+            $carts = Carts::where('idUser', $id)->get();
 
-            if (count($carts) > 0) {
+            if (count($carts) == 0) {
                 //Đổ Dữ Liệu Ra Lại View
                 $countCart = 0;
 
@@ -427,19 +489,99 @@ class ClientController extends Controller
 
     //View Order
     public function viewOrder(){
+
         $countCart = 0;
 
         $total = 0;
 
-        $userCarts = $this->cart->where('idUser', $_SESSION['idUser'])->get();
+        if (isset($_SESSION['idUser'])){
+            $userCarts = Carts::where('idUser', $_SESSION['idUser'])->get();
+        }else{
+            $userCarts = CartsTemp::where('idUser', $_SESSION['userTemp'])->get();
+        }
 
         foreach ($userCarts as $userCart) {
             $total += $userCart->count * $userCart->priceProduct;
             $countCart += $userCart->count;
         }
 
-        return view('client.checkout', ['carts' => $userCarts, 'total' => $total, 'countCart' => $countCart]);
+        $free = 0;
+        $ship10 = 10;
+        $ship20 = 20;
+
+        return view('client.checkout', ['carts' => $userCarts, 'total' => $total, 'countCart' => $countCart,
+        'free' => $free, 'shipGan' => $ship10, 'shipXa' => $ship20]);
+
+    }
+
+    //Change Method Ship
+    public function priceShip(Request $request){
+
+        if ($request->ajax()){
+            // dd($request->all());
+
+            $priceShip = $request->get('price');
+            
+            $userProducts = Carts::where('idUser', $_SESSION['idUser'])->get();
+
+            $total = 0;
+
+            foreach ($userProducts as $userProduct){
+                $total += $userProduct->count * $userProduct->priceProduct;
+            }
+
+            $total += $priceShip;
+
+            $viewCheckout = view('ajax.changeShip-data', compact('total', 'priceShip'))->render();
+            return response()->json(['viewCheckout' => $viewCheckout, 'code' => 200], 200);
+
+        }
+
+    }
+
+    //Mail Order
+    public function mailOrder(Request $request){
+
+        if (isset($_SESSION['idUser'])){
+            $carts = Carts::where('idUser', $_SESSION['idUser'])->get();
+        }else{
+            $carts = CartsTemp::where('idUser', $_SESSION['userTemp'])->get();
+        }
+
+        Mail::send('email.sendmail', [
+            'userName' => $request->username,
+            'email' => $request->email,
+            'address' => $request->address,
+            'total' => $request->total,
+            'carts' => $carts], function ($m) use ($request) {
+
+            $m->to($request->email)->subject('Xác Nhận Đơn Hàng!');
+
+            $m->from('mail.tienkim9920@gmail.com', 'Your Application');
+        });
+
+        return redirect('/client/order/email');
+
     }
 
 
+    public function email(){
+
+        $countCart = 0;
+
+        $total = 0;
+
+        if (isset($_SESSION['idUser'])){
+            $userTemps = $this->cart->where('idUser', $_SESSION['idUser'])->get();
+        }else{
+            $userTemps = $this->cartTemp->where('idUser', $_SESSION['userTemp'])->get();
+        }
+
+        foreach ($userTemps as $userTemp) {
+            $total += $userTemp->count * $userTemp->priceProduct;
+            $countCart += $userTemp->count;
+        }
+
+        return view('client.order', ['carts' => $userTemps, 'total' => $total, 'countCart' => $countCart]);
+    }
 }

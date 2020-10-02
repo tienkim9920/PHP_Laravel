@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Site Metas -->
-    <title>Detail Product</title>
+    <title>Login</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="login-box" style="width: 15rem !important;">
-                        @if (isset($_SESSION['user']))
+                        @if (isset($_SESSION['idUser']))
                         <a class="clickLogin" href="#">{{ $_SESSION['user'] }}</a>
                         <a class="clickLogin" href="/client/login">( Log Out )</a>
                         @else

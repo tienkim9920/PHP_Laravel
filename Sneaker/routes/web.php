@@ -101,6 +101,13 @@ Route::get('/client/register', 'ClientController@getRegister');
 //Check Order
 Route::get('/client/ajax/checkOrder', 'ClientController@checkOrder')->name('client.check');
 
-
 //Order
 Route::get('/client/order', 'ClientController@viewOrder');
+Route::post('/client/order/mail', 'ClientController@mailOrder');
+
+//Check Out Ship
+Route::get('/client/ajax/ship', 'ClientController@priceShip')->name('client.ship');
+
+
+//Test Mail
+Route::get('/client/order/email', 'ClientController@email');

@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="login-box" style="width: 15rem !important;">
-                        @if (isset($_SESSION['user']))
+                        @if (isset($_SESSION['idUser']))
                         <a class="clickLogin" href="#">{{ $_SESSION['user'] }}</a>
                         <a class="clickLogin" href="/client/login">( Log Out )</a>
                         @else
@@ -85,7 +85,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/client">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
                         <li class="dropdown active">
                             <a href="shop.html" class="nav-link">SHOP</a>
